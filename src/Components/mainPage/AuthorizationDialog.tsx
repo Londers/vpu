@@ -9,6 +9,8 @@ import {InputAdornment, makeStyles, TextField} from "@material-ui/core";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
+import {useDispatch} from "react-redux";
+import {loggedIn} from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,9 +24,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function AuthorizationDialog(props: {
-    setLogged: Function
-}) {
+function AuthorizationDialog() {
     const classes = useStyles();
 
     const [open, setOpen] = useState(true)
@@ -33,26 +33,29 @@ function AuthorizationDialog(props: {
         login: '',
         password: '',
         showPassword: false
-    });
+    })
+
+    const dispatch = useDispatch()
 
     // const handleClickOpen = () => {
     //     setOpen(true)
     // }
 
-    const handleAuth = () => {
+    const handleAuth = (login: string) => {
         // alert('WINNER WINNER CHICKEN DINNER')
         setOpen(false)
-        props.setLogged(true)
+        dispatch(loggedIn({login: login}))
+        // props.setLogged(true)
     }
 
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
     const onSubmit = async (values: { login: string, password: string }) => {
         await sleep(300)
-        window.alert(JSON.stringify(values))
+        // TODO: implement authorization through websocket
         if (values.login === 'Londers') {
             setError(false)
-            handleAuth()
+            handleAuth('Londers')
         } else {
             setError(true)
         }
@@ -85,7 +88,7 @@ function AuthorizationDialog(props: {
                                 render={props => {
                                     return (
                                         <TextField label="Логин"
-                                                   required={true}
+                                                   // required={true}
                                                    error={error}
                                                    {...props.input}/>
                                     )
@@ -100,7 +103,7 @@ function AuthorizationDialog(props: {
                                 render={props => {
                                     return (
                                         <TextField label="Пароль"
-                                                   required={true}
+                                                   // required={true}
                                                    error={error}
                                                    InputProps={{
                                                        endAdornment:
