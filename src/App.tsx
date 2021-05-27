@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
     BrowserRouter as Router,
     Switch,
@@ -12,7 +12,7 @@ import UsersPage from './Components/usersPage/UsersPage';
 import AboutPage from './Components/aboutPage/AboutPage';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppBar, ButtonBase, createStyles, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
-import {loggedOut} from './redux/actions';
+import {loggedOut, wsClose, wsConnect, wsError, wsMessage, wsOpen} from './redux/actions';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,8 +37,21 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function App() {
     const classes = useStyles();
-    const logged = useSelector((state: { logged: boolean }) => state.logged)
+    const logged = useSelector((state: { auth: { logged: boolean } }) => state.auth.logged)
     const dispatch = useDispatch()
+
+    const host = `wss://${window.location.hostname}/MainPageW`;
+    useEffect(() => {
+        const ws = new WebSocket(host)
+
+        ws.onopen = (evt) => dispatch(wsOpen({evt: evt}))
+        ws.onclose = (evt) => dispatch(wsClose({evt: evt}))
+        ws.onerror = (evt) => dispatch(wsError({evt: evt}))
+        ws.onmessage = (evt) => dispatch(wsMessage({evt: evt}))
+
+        dispatch(wsConnect({ws: ws}))
+        // dispatch(wsConnect({host: host}))
+    }, [dispatch, host]);
 
     const handleClick = () => {
         dispatch(loggedOut())
@@ -59,7 +72,7 @@ function App() {
                             <Link to="/users" className={classes.appBarLinks}>Users</Link>
                         </Typography>
                         <ButtonBase color="primary" onClick={handleClick} className={classes.logout}>
-                            Выйти из пользователя</ButtonBase>
+                            Выйти</ButtonBase>
                     </Toolbar>
                 </AppBar>
 

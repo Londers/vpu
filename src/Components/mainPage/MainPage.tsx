@@ -6,19 +6,13 @@ import DeviceTable from "./DeviceTable";
 
 function MainPage() {
 
-    const logged = useSelector((state: { logged: boolean }) => state.logged)
-    // const login = useSelector((state: { login: string }) => state.login)
+    const logged = useSelector((state: { auth: { logged: boolean } }) => state.auth.logged)
 
     return (
         <div id="main">
             {(() => {
                 if (logged) {
-                    return (
-                        // <React.Fragment>
-                        //     <text>Вы зашли как {login}</text>
-                        // </React.Fragment>
-                        <DeviceTable />
-                    )
+                    return <DeviceTable/>
                 } else {
                     return <AuthorizationDialog/>
                 }

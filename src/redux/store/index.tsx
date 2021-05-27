@@ -1,10 +1,10 @@
 import {applyMiddleware, createStore} from "redux"
 import rootReducer from "../reducers/index"
-import {returnToMainMiddleware} from "../middleware";
+import {LoginMiddleware, WebSocketMiddleware} from "../middleware";
 
 const store = createStore(
     rootReducer,
-    applyMiddleware(returnToMainMiddleware)
+    applyMiddleware(WebSocketMiddleware, LoginMiddleware)
 )
 
 export default store

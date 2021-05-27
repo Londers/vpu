@@ -9,8 +9,7 @@ import {InputAdornment, makeStyles, TextField} from "@material-ui/core";
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import IconButton from '@material-ui/core/IconButton';
-import {useDispatch} from "react-redux";
-import {loggedIn} from "../../redux/actions";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,37 +27,44 @@ function AuthorizationDialog() {
     const classes = useStyles();
 
     const [open, setOpen] = useState(true)
-    const [error, setError] = useState(false)
+    // const [error, setError] = useState(false)
     const [values, setValues] = useState({
         login: '',
         password: '',
         showPassword: false
     })
 
-    const dispatch = useDispatch()
+    const ws = useSelector((state: {websocket: { ws: WebSocket }}) => state.websocket.ws)
+    const error = useSelector((state: {auth: {loginError: boolean}}) => state.auth.loginError)
+
+    // const dispatch = useDispatch()
 
     // const handleClickOpen = () => {
     //     setOpen(true)
     // }
 
-    const handleAuth = (login: string) => {
-        // alert('WINNER WINNER CHICKEN DINNER')
-        setOpen(false)
-        dispatch(loggedIn({login: login}))
-        // props.setLogged(true)
-    }
+    // const handleAuth = (login: string) => {
+    //     // alert('WINNER WINNER CHICKEN DINNER')
+    //     setOpen(false)
+    //     dispatch(loggedIn({login: login}))
+    //     // props.setLogged(true)
+    // }
 
     const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
     const onSubmit = async (values: { login: string, password: string }) => {
         await sleep(300)
+        // dispatch(wsSend({type: 'login', login: values.login, password: values.password}))
+        ws.send(JSON.stringify({type: 'login', login: values.login, password: values.password}))
+        // ws.send(JSON.stringify({type: 'login', data: {login: values.login, password: values.password}}))
+
         // TODO: implement authorization through websocket
-        if (values.login === 'Londers') {
-            setError(false)
-            handleAuth('Londers')
-        } else {
-            setError(true)
-        }
+        // if (values.login === 'Londers') {
+        //     setError(false)
+        //     handleAuth('Londers')
+        // } else {
+        //     setError(true)
+        // }
     }
 
     const handleChange = (prop: string) => (event: React.KeyboardEvent<HTMLInputElement>) => {
