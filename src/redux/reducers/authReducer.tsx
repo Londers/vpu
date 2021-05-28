@@ -4,7 +4,7 @@ const login = localStorage.getItem('login')
 
 const authInitialState = {
     loginError: false,
-    logged: (login !== null) && (login !== undefined),
+    logged: (login !== 'null') && (login !== undefined),
     login: login,
 };
 

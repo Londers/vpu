@@ -7,7 +7,7 @@ import {
     WS_MESSAGE,
     WS_OPEN
 } from "../constants/action-types";
-import {loggedIn, loginError} from "../actions";
+import {loggedIn, loginError, setPhoneTableData} from "../actions";
 
 export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: any) => {
     // const state = storeApi.getState() // correctly typed as RootState
@@ -27,12 +27,18 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
             switch (data.type) {
                 case 'login':
                     if (data.data.status) {
+                        document.cookie = ('Authorization=Bearer ' + data.data.token)
                         dispatch(loggedIn(data.data.login))
                     } else {
                         dispatch(loginError({}))
                     }
                     break;
+                case 'phoneTable':
+                    dispatch(setPhoneTableData(data.data.phones))
+                    console.log('logout', data.data)
+                    break;
                 case 'logout':
+                    document.cookie = ''
                     console.log('logout', data.data)
                     break;
                 case 'error':
@@ -52,7 +58,7 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
 }
 
 export const LoginMiddleware = (storeApi: any) => (next: any) => (action: any) => {
-    // const state = storeApi.getState() // correctly typed as RootState
+    const state = storeApi.getState() // correctly typed as RootState
     // const dispatch = storeApi.dispatch
     switch (action.type) {
         case LOGGED_IN:
@@ -61,6 +67,7 @@ export const LoginMiddleware = (storeApi: any) => (next: any) => (action: any) =
             break
         case LOGGED_OUT:
             localStorage.setItem('login', 'null')
+            state.websocket.ws.send(JSON.stringify({type: 'logOut'}))
             console.log('auth logged out', action.payload)
             break
     }

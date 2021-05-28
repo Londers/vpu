@@ -1,7 +1,7 @@
 import {
     LOGGED_IN,
     LOGGED_OUT,
-    LOGIN_ERROR,
+    LOGIN_ERROR, SET_PHONE_TABLE_DATA,
     WS_CLOSE,
     WS_CONNECT,
     WS_ERROR,
@@ -9,28 +9,10 @@ import {
     WS_OPEN,
 } from "../constants/action-types";
 
-// export function mainPageWebSocket(payload: { wss: string }) {
-//     return {type: MAIN_PAGE_WEBSOCKET, payload};
-// }
-// export function wsConnected() {
-//     return {type: WS_CONNECTED};
-// }
-// export function wsDisconnected() {
-//     return {type: WS_DISCONNECTED};
-// }
-
-// export function wsMessage(payload: {type: string, data: any}) {
-// export function wsMessage(payload: {type: string, login: string, password: string}) {
-//     return {type: WS_MESSAGE, payload};
-// }
-
+// websocket
 export function wsConnect(payload: {ws: WebSocket}) {
     return {type: WS_CONNECT, payload};
 }
-
-// export function wsDisconnect() {
-//     return {type: WS_DISCONNECT};
-// }
 
 export function wsOpen(payload: {evt: Event}) {
     return {type: WS_OPEN, payload};
@@ -48,10 +30,7 @@ export function wsMessage(payload: {evt: Event}) {
     return {type: WS_MESSAGE, payload};
 }
 
-// export function wsSend(payload : {type : string, login: string, password: string}) {
-//     return {type: WS_SEND, payload};
-// }
-
+// login
 export function loggedIn(payload: { login: string }) {
     return {type: LOGGED_IN, payload};
 }
@@ -62,4 +41,9 @@ export function loginError(payload: {}) {
 
 export function loggedOut() {
     return {type: LOGGED_OUT};
+}
+
+// other
+export function setPhoneTableData(payload: any) {
+    return {type: SET_PHONE_TABLE_DATA, payload}
 }
