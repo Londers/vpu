@@ -2,7 +2,7 @@ import {SET_PHONE_TABLE_DATA} from "../constants/action-types";
 
 
 const tablesInitialState = {
-    phoneTableData: []
+    phoneTableData: {}
 };
 
 export const tablesReducer = (state = {...tablesInitialState}, action: {

@@ -1,8 +1,8 @@
 import React from "react"
-import AuthorizationDialog from "./AuthorizationDialog"
+import AuthorizationDialog from "../../Components/AuthorizationDialog/AuthorizationDialog"
 import './MainPage.sass'
 import {useSelector} from "react-redux"
-import PhoneTable from "./PhoneTable"
+import PhoneTable from "../../Components/PhoneTable/PhoneTable"
 
 function MainPage() {
 
@@ -12,7 +12,9 @@ function MainPage() {
         <div id="main">
             {(() => {
                 if (logged) {
-                    return <PhoneTable/>
+                    return (
+                        <PhoneTable/>
+                    )
                 } else {
                     return <AuthorizationDialog/>
                 }

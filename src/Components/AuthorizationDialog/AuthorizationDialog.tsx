@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
 function AuthorizationDialog() {
     const classes = useStyles();
 
-    const [open, setOpen] = useState(true)
+    const open = true
+    // const [open, setOpen] = useState(true)
     // const [error, setError] = useState(false)
     const [values, setValues] = useState({
         login: '',
@@ -58,7 +59,6 @@ function AuthorizationDialog() {
         ws.send(JSON.stringify({type: 'login', login: values.login, password: values.password}))
         // ws.send(JSON.stringify({type: 'login', data: {login: values.login, password: values.password}}))
 
-        // TODO: implement authorization through websocket
         // if (values.login === 'Londers') {
         //     setError(false)
         //     handleAuth('Londers')

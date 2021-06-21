@@ -7,9 +7,9 @@ import {
     Redirect
 } from 'react-router-dom';
 import './App.sass';
-import MainPage from './Components/mainPage/MainPage';
-import UsersPage from './Components/usersPage/UsersPage';
-import AboutPage from './Components/aboutPage/AboutPage';
+import MainPage from './Pages/mainPage/MainPage';
+import UsersPage from './Pages/usersPage/UsersPage';
+import AboutPage from './Pages/aboutPage/AboutPage';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppBar, ButtonBase, createStyles, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
 import {loggedOut, wsClose, wsConnect, wsError, wsMessage, wsOpen} from './redux/actions';
@@ -50,7 +50,6 @@ function App() {
         ws.onmessage = (evt) => dispatch(wsMessage({evt: evt}))
 
         dispatch(wsConnect({ws: ws}))
-        // dispatch(wsConnect({host: host}))
     }, [dispatch, host]);
 
     const handleClick = () => {

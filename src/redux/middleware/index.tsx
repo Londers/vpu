@@ -14,13 +14,13 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
     const dispatch = storeApi.dispatch
     switch (action.type) {
         case WS_OPEN:
-            console.log('ws open host:', action.payload)
+            console.log('ws open', action.payload)
             break
         case WS_CLOSE:
-            console.log('ws close host:', action.payload)
+            console.log('ws close', action.payload)
             break
         case WS_ERROR:
-            console.log('ws error host:', action.payload)
+            console.log('ws error', action.payload)
             break
         case WS_MESSAGE:
             const data = JSON.parse(action.payload.evt.data)
@@ -34,8 +34,8 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                     }
                     break;
                 case 'phoneTable':
-                    dispatch(setPhoneTableData(data.data.phones))
-                    console.log('logout', data.data)
+                    dispatch(setPhoneTableData(data.data))
+                    console.log('phoneTable', data.data)
                     break;
                 case 'logout':
                     document.cookie = ''
@@ -48,10 +48,10 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                     console.log('unknown type', data.data)
                     break;
             }
-            console.log('ws message host:', data)
+            console.log('ws message', data)
             break
         case WS_CONNECT:
-            console.log('ws connect host:', action.payload.host)
+            console.log('ws connect', action.payload.ws)
             break
     }
     return next(action)
