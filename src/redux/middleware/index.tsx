@@ -6,8 +6,15 @@ import {
     WS_ERROR,
     WS_MESSAGE,
     WS_OPEN
-} from "../constants/action-types";
-import {loggedIn, loginError, setPhoneTableData} from "../actions";
+} from "../constants/action-types"
+import {
+    createPhoneTableRow,
+    loggedIn,
+    loginError,
+    removePhoneTableRow,
+    setPhoneTableData,
+    setPhoneTableRow
+} from "../actions"
 
 export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: any) => {
     // const state = storeApi.getState() // correctly typed as RootState
@@ -32,21 +39,35 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                     } else {
                         dispatch(loginError({}))
                     }
-                    break;
+                    break
+
                 case 'phoneTable':
                     dispatch(setPhoneTableData(data.data))
                     console.log('phoneTable', data.data)
-                    break;
+                    break
+                case 'updatePhone':
+                    dispatch(setPhoneTableRow(data.data))
+                    console.log('updatePhone', data.data)
+                    break
+                case 'removePhone':
+                    dispatch(removePhoneTableRow(data.data))
+                    console.log('removePhone', data.data)
+                    break
+                case 'createPhone':
+                    dispatch(createPhoneTableRow(data.data))
+                    console.log('createPhone', data.data)
+                    break
+
                 case 'logout':
                     document.cookie = ''
                     console.log('logout', data.data)
-                    break;
+                    break
                 case 'error':
                     console.log('error', data.data)
-                    break;
+                    break
                 default:
                     console.log('unknown type', data.data)
-                    break;
+                    break
             }
             console.log('ws message', data)
             break

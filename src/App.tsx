@@ -13,6 +13,7 @@ import AboutPage from './Pages/aboutPage/AboutPage';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppBar, ButtonBase, createStyles, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
 import {loggedOut, wsClose, wsConnect, wsError, wsMessage, wsOpen} from './redux/actions';
+import wsImitation from "./Components/WebSoscketImitation";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,16 +41,18 @@ function App() {
     const logged = useSelector((state: { auth: { logged: boolean } }) => state.auth.logged)
     const dispatch = useDispatch()
 
-    const host = `wss://${window.location.hostname}/MainPageW`;
+    const host = `wss://${window.location.hostname}/MainPageW`
     useEffect(() => {
-        const ws = new WebSocket(host)
+        // const ws = new WebSocket(host)
 
-        ws.onopen = (evt) => dispatch(wsOpen({evt: evt}))
-        ws.onclose = (evt) => dispatch(wsClose({evt: evt}))
-        ws.onerror = (evt) => dispatch(wsError({evt: evt}))
-        ws.onmessage = (evt) => dispatch(wsMessage({evt: evt}))
+        // ws.onopen = (evt) => dispatch(wsOpen({evt}))
+        // ws.onclose = (evt) => dispatch(wsClose({evt}))
+        // ws.onerror = (evt) => dispatch(wsError({evt}))
+        // ws.onmessage = (evt) => dispatch(wsMessage({evt}))
 
-        dispatch(wsConnect({ws: ws}))
+        const wsImitate = new wsImitation(host, dispatch)
+
+        dispatch(wsConnect({ws: wsImitate}))
     }, [dispatch, host]);
 
     const handleClick = () => {
