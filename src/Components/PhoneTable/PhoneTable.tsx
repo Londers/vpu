@@ -39,7 +39,7 @@ const columns: GridColDef[] = [
     {field: 'connect', headerName: 'Статус', flex: 1},
     {field: 'nfaze', headerName: 'Текущая фаза', flex: 1.5},
     {field: 'cfaze', headerName: 'Запрошенная фаза', flex: 1.75},
-];
+]
 
 function convertData(index: number, areasList: any, login: string, name: string, areasArr: string[], dateDB: string, ltime: string, laspOP: string,
                      device: string, connect: boolean | string, nfaze?: number, cfaze?: number,) {
@@ -55,9 +55,9 @@ function convertData(index: number, areasList: any, login: string, name: string,
 }
 
 function PhoneTable() {
-    const tableData = useSelector((state: { tables: { phoneTableData: { phones: any, areas: any } } }) =>
-        state.tables.phoneTableData)
-    console.log('-------------', tableData)
+    const tableData = useSelector((state: { tables: { phonesTableData: { phones: any, areas: string[] } } }) =>
+        state.tables.phonesTableData)
+    console.log('phoneTable', tableData)
 
     const wsImitate = useSelector((state: { websocket: { ws: wsImitation } }) => state.websocket.ws)
 

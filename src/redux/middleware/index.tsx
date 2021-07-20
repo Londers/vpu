@@ -8,10 +8,11 @@ import {
     WS_OPEN
 } from "../constants/action-types"
 import {
+    createAccountTableRow,
     createPhoneTableRow,
     loggedIn,
-    loginError,
-    removePhoneTableRow,
+    loginError, removeAccountTableRow,
+    removePhoneTableRow, setAccountTableData, setAccountTableRow,
     setPhoneTableData,
     setPhoneTableRow
 } from "../actions"
@@ -40,7 +41,15 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                         dispatch(loginError({}))
                     }
                     break
+                case 'logout':
+                    document.cookie = ''
+                    console.log('logout', data.data)
+                    break
 
+                case 'createPhone':
+                    dispatch(createPhoneTableRow(data.data))
+                    console.log('createPhone', data.data)
+                    break
                 case 'phoneTable':
                     dispatch(setPhoneTableData(data.data))
                     console.log('phoneTable', data.data)
@@ -53,15 +62,24 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                     dispatch(removePhoneTableRow(data.data))
                     console.log('removePhone', data.data)
                     break
-                case 'createPhone':
-                    dispatch(createPhoneTableRow(data.data))
-                    console.log('createPhone', data.data)
+
+                case 'createAccount':
+                    dispatch(createAccountTableRow(data.data))
+                    console.log('createAcc', data.data)
+                    break
+                case 'getAccounts':
+                    dispatch(setAccountTableData(data.data))
+                    console.log('accTable', data.data)
+                    break
+                case 'updateAccount':
+                    dispatch(setAccountTableRow(data.data))
+                    console.log('updateAcc', data.data)
+                    break
+                case 'removeAccount':
+                    dispatch(removeAccountTableRow(data.data))
+                    console.log('removeAcc', data.data)
                     break
 
-                case 'logout':
-                    document.cookie = ''
-                    console.log('logout', data.data)
-                    break
                 case 'error':
                     console.log('error', data.data)
                     break

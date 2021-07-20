@@ -60,6 +60,33 @@ export default class wsImitation {
         }
     }
 
+    private accountsTable = {
+        type: 'getAccounts',
+        data: {
+            areas: {1: 'area1', 2: 'area2', 3: 'area3'},
+            privileges: ['Viewer', 'User', 'RegAdmin'],
+            accounts: [
+                {
+                    login: 'TechAutomatic',
+                    description: 'Tech',
+                    password: '$2a$10$ZCWyIEfEVF3KGj6OUtIeSOQ3WexMjuAZ43VSO6T.QqOndn4HN1J6C',
+                    workTime: 1440,
+                    token: 'token',
+                    privilege: {
+                        "area": [
+                            "*"
+                        ],
+                        "role": {
+                            "name": "Viewer",
+                            "permissions": null
+                        },
+                        "region": "*"
+                    }
+                }
+            ]
+        }
+    }
+
     send(JSONData: string) {
         // const evt = new MessageEvent('message', {data: JSONData});
         // this.dispatch(wsMessage({evt: {data: JSONData}}))
@@ -111,11 +138,12 @@ export default class wsImitation {
                 }))
                 break
             case 'removePhone':
+                this.phonesTable.data.phones = this.phonesTable.data.phones.filter(phone => phone.login !== data.data.login)
                 this.dispatch(wsMessage({
                     evt: {
                         data: JSON.stringify({
                             type: 'removePhone',
-                            data: this.phonesTable.data.phones.filter(phone => phone.login !== data.data.login)
+                            data: this.phonesTable.data.phones
                         })
                     }
                 }))
@@ -123,8 +151,18 @@ export default class wsImitation {
 
             // accounts table
             case 'createAccount':
+                this.accountsTable.data.accounts.push(data.data)
+                this.dispatch(wsMessage({
+                    evt: {
+                        data: JSON.stringify({
+                            type: 'createAccount',
+                            data: this.accountsTable.data.accounts
+                        })
+                    }
+                }))
                 break
             case 'getAccounts':
+                this.dispatch(wsMessage({evt: {data: JSON.stringify(this.accountsTable)}}))
                 break
             case 'updateAccount':
                 break

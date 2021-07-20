@@ -9,7 +9,7 @@ import {
 import './App.sass';
 import MainPage from './Pages/mainPage/MainPage';
 import UsersPage from './Pages/usersPage/UsersPage';
-import AboutPage from './Pages/aboutPage/AboutPage';
+import AccountsPage from './Pages/aboutPage/AccountsPage';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppBar, ButtonBase, createStyles, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
 import {loggedOut, wsClose, wsConnect, wsError, wsMessage, wsOpen} from './redux/actions';
@@ -65,10 +65,10 @@ function App() {
                 <AppBar position="static" hidden={!logged}>
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            <Link to="/" className={classes.appBarLinks}>Home</Link>
+                            <Link to="/" className={classes.appBarLinks}>Phones</Link>
                         </Typography>
                         <Typography variant="h6" className={classes.title}>
-                            <Link to="/about" className={classes.appBarLinks}>About</Link>
+                            <Link to="/accounts" className={classes.appBarLinks}>Accounts</Link>
                         </Typography>
                         <Typography variant="h6" className={classes.title}>
                             <Link to="/users" className={classes.appBarLinks}>Users</Link>
@@ -81,8 +81,8 @@ function App() {
                 {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
                 <Switch>
-                    <Route path="/about">
-                        {logged ? <AboutPage/> : <Redirect to="/"/>}
+                    <Route path="/accounts">
+                        {logged ? <AccountsPage/> : <Redirect to="/"/>}
                     </Route>
                     <Route path="/users">
                         {logged ? <UsersPage/> : <Redirect to="/"/>}

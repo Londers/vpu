@@ -1,32 +1,31 @@
 import React, {ChangeEvent, useState} from "react";
-import './PhoneAddModal.sass'
+import './AccountAddModal.sass'
 import {Button, FormControl, InputLabel, Select, TextField} from "@material-ui/core";
 import {useSelector} from "react-redux";
 import wsImitation from "../WebSoscketImitation";
 
-function PhoneAddModal(props: { setModal: Function, areas: {} }) {
+function AccountAddModal(props: { setModal: Function, areas: {}, privileges: string[] }) {
     const wsImitate = useSelector((state: { websocket: { ws: wsImitation } }) => state.websocket.ws)
 
-    const [phone, setPhone] = useState({
-        areas: [] as string[],
+    const [account, setAccount] = useState({
         login: '',
-        name: '',
+        description: '',
         password: '',
-        status: {
-            cfaze: 0,
-            connect: false,
-            dateDB: "2021-06-15T14:58:40.8717014+06:00",
-            device: "1:48",
-            last_ops: "Загрузка БД",
-            ltime: "2021-05-31T14:00:20.4008958+06:00",
-            nfaze: 0
-        }
+        workTime: 0,
+        privilege: {
+            area: [] as string[],
+            role: {
+                name: '',
+                permissions: null,
+            },
+            region: '',
+        },
     })
 
     const handleSubmit = () => {
-        console.log(phone)
+        console.log(account)
         props.setModal(false)
-        wsImitate.send(JSON.stringify({type: 'createPhone', data: phone}))
+        wsImitate.send(JSON.stringify({type: 'createAccount', data: account}))
     }
 
     const handleClick = () => {
@@ -34,26 +33,38 @@ function PhoneAddModal(props: { setModal: Function, areas: {} }) {
     }
 
     const handleLoginChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        phone.login = event.target.value
-        setPhone(Object.assign({}, phone))
+        account.login = event.target.value
+        setAccount(Object.assign({}, account))
         if (event.target.value !== '') event.target.setCustomValidity('')
     }
 
-    const handleNameChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        phone.name = event.target.value
-        setPhone(Object.assign({}, phone))
+    const handleDescChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        account.description = event.target.value
+        setAccount(Object.assign({}, account))
         if (event.target.value !== '') event.target.setCustomValidity('')
     }
 
     const handlePasswordChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        phone.password = event.target.value
-        setPhone(Object.assign({}, phone))
+        account.password = event.target.value
+        setAccount(Object.assign({}, account))
         if (event.target.value !== '') event.target.setCustomValidity('')
     }
 
     const handleAreasChange = (event: any) => {
-        phone.areas = Array.from(event.target.selectedOptions).map((option: any) => option.value)
-        setPhone(Object.assign({}, phone))
+        account.privilege.area = Array.from(event.target.selectedOptions).map((option: any) => option.value)
+        setAccount(Object.assign({}, account))
+        if (event.target.value !== '') event.target.setCustomValidity('')
+    }
+
+    const handlePrivilegeChange = (event: any) => {
+        account.privilege.role.name = event.target.value
+        setAccount(Object.assign({}, account))
+        // if (event.target.value !== '') event.target.setCustomValidity('')
+    }
+
+    const handleWorkTimeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        account.workTime = event.target.valueAsNumber
+        setAccount(Object.assign({}, account))
         if (event.target.value !== '') event.target.setCustomValidity('')
     }
 
@@ -74,9 +85,11 @@ function PhoneAddModal(props: { setModal: Function, areas: {} }) {
             <form className="inputsGroup" onSubmit={handleSubmit} autoComplete="off">
                 <TextField label="Логин" id="login" variant="outlined" onChange={handleLoginChange}
                            onInvalid={handleInvalid} required={true}/>
-                <TextField label="Имя" id="name" variant="outlined" onChange={handleNameChange}
+                <TextField label="Описание" id="description" variant="outlined" onChange={handleDescChange}
                            onInvalid={handleInvalid} required={true}/>
                 <TextField label="Пароль" id="password" type="password" onChange={handlePasswordChange}
+                           onInvalid={handleInvalid} variant="outlined" required={true}/>
+                <TextField label="Время работы" id="workTime" type="number" onChange={handleWorkTimeChange}
                            onInvalid={handleInvalid} variant="outlined" required={true}/>
                 <FormControl onInvalid={handleInvalid}>
                     {/*className={classes.formControl}>*/}
@@ -101,6 +114,28 @@ function PhoneAddModal(props: { setModal: Function, areas: {} }) {
                         }
                     </Select>
                 </FormControl>
+                <FormControl onInvalid={handleInvalid}>
+                    {/*className={classes.formControl}>*/}
+                    <InputLabel shrink htmlFor="select-multiple-native">
+                        Роль ползователя
+                    </InputLabel>
+                    <Select
+                        onChange={handlePrivilegeChange}
+                        inputProps={{
+                            id: 'select-privileges',
+                            required: true,
+                        }}
+                        defaultValue={props.privileges[0]}
+                    >
+                        {
+                            props.privileges.map((privilege, index) =>
+                                <option key={index} value={privilege}>
+                                    {privilege}
+                                </option>
+                            )
+                        }
+                    </Select>
+                </FormControl>
                 <Button type="submit" variant="contained" color="primary">Создать</Button>
                 {/*<input type="submit" value="Submit" />*/}
             </form>
@@ -109,4 +144,4 @@ function PhoneAddModal(props: { setModal: Function, areas: {} }) {
     )
 }
 
-export default PhoneAddModal
+export default AccountAddModal

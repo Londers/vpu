@@ -1,12 +1,17 @@
 import {
-    CREATE_PHONE_TABLE_ROW,
-    REMOVE_PHONE_TABLE_ROW,
     SET_PHONE_TABLE_DATA,
-    SET_PHONE_TABLE_ROW
+    SET_PHONE_TABLE_ROW,
+    REMOVE_PHONE_TABLE_ROW,
+    CREATE_PHONE_TABLE_ROW,
+    SET_ACCOUNT_TABLE_DATA,
+    SET_ACCOUNT_TABLE_ROW,
+    REMOVE_ACCOUNT_TABLE_ROW,
+    CREATE_ACCOUNT_TABLE_ROW,
 } from "../constants/action-types";
 
 const tablesInitialState = {
-    phoneTableData: {areas: {}, phones: []}
+    phonesTableData: {areas: {}, phones: []},
+    accountsTableData: {accounts: []},
 };
 
 export const tablesReducer = (state = {...tablesInitialState}, action: {
@@ -16,26 +21,50 @@ export const tablesReducer = (state = {...tablesInitialState}, action: {
     switch (action.type) {
         case SET_PHONE_TABLE_DATA:
             return Object.assign({}, state, {
-                phoneTableData: action.payload
+                phonesTableData: action.payload
             })
         case SET_PHONE_TABLE_ROW: {
-            const copy = JSON.parse(JSON.stringify(state.phoneTableData))
+            const copy = JSON.parse(JSON.stringify(state.phonesTableData))
             copy.phones = action.payload
             return Object.assign({}, state, {
-                phoneTableData: copy
+                phonesTableData: copy
             })
         }
         case REMOVE_PHONE_TABLE_ROW: {
-            const copy = JSON.parse(JSON.stringify(state.phoneTableData))
+            const copy = JSON.parse(JSON.stringify(state.phonesTableData))
             copy.phones = action.payload
             return Object.assign({}, state, {
-                phoneTableData: copy
+                phonesTableData: copy
             })
         }
         case CREATE_PHONE_TABLE_ROW:
             return Object.assign({}, state, {
-                phoneTableData: action.payload
+                phonesTableData: action.payload
             })
+
+        case SET_ACCOUNT_TABLE_DATA:
+            return Object.assign({}, state, {
+                accountsTableData: action.payload
+            })
+        case SET_ACCOUNT_TABLE_ROW: {
+            const copy = JSON.parse(JSON.stringify(state.accountsTableData))
+            copy.phones = action.payload
+            return Object.assign({}, state, {
+                accountsTableData: copy
+            })
+        }
+        case REMOVE_ACCOUNT_TABLE_ROW: {
+            const copy = JSON.parse(JSON.stringify(state.accountsTableData))
+            copy.phones = action.payload
+            return Object.assign({}, state, {
+                accountsTableData: copy
+            })
+        }
+        case CREATE_ACCOUNT_TABLE_ROW:
+            return Object.assign({}, state, {
+                accountsTableData: action.payload
+            })
+
         default:
             return state
     }

@@ -1,22 +1,20 @@
 import React, {useState} from "react";
 import {Button, Modal} from "@material-ui/core";
-import {useSelector} from "react-redux";
 import websocketImitation from "../WebSoscketImitation";
-import PhoneAddModal from "./PhoneAddModal";
-// import PhoneTable from "./PhoneTable";
-// import AuthorizationDialog from "../AuthorizationDialog/AuthorizationDialog";
+import {useSelector} from "react-redux";
+import AccountAddModal from "./AccountAddModal";
 
-function PhoneToolbar(props: { selectedLogin: string, areas: {}}) {
+function AccountsToolbar(props: {selectedLogin: string, areas: string[], privileges: string[]}) {
 
-    // const ws = useSelector((state: {websocket: { ws: WebSocket }}) => state.websocket.ws)
     const wsImitation = useSelector((state: { websocket: { ws: websocketImitation } }) => state.websocket.ws)
     const [openAddModal, setOpenAddModal] = useState(false)
 
     const handleAdd = () => {
         setOpenAddModal(true)
     }
+
     const handleDelete = () => {
-        wsImitation.send(JSON.stringify({type: 'removePhone', data: {login: props.selectedLogin}}))
+        wsImitation.send(JSON.stringify({type: 'removeAccount', data: {login: props.selectedLogin}}))
     }
 
     return (
@@ -29,10 +27,10 @@ function PhoneToolbar(props: { selectedLogin: string, areas: {}}) {
             </Button>
             <Modal open={openAddModal}
                    onBackdropClick={() => setOpenAddModal(false)}>
-                <PhoneAddModal setModal={setOpenAddModal} areas={props.areas}/>
+                <AccountAddModal setModal={setOpenAddModal} areas={props.areas} privileges={props.privileges}/>
             </Modal>
         </div>
     )
 }
 
-export default PhoneToolbar
+export default AccountsToolbar
