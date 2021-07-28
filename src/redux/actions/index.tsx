@@ -14,7 +14,7 @@ import {
     SET_ACCOUNT_TABLE_DATA,
     SET_ACCOUNT_TABLE_ROW,
     REMOVE_ACCOUNT_TABLE_ROW,
-    CREATE_ACCOUNT_TABLE_ROW,
+    CREATE_ACCOUNT_TABLE_ROW, SET_CROSSES_TABLE_DATA, SET_CROSSES_TABLE_ROW,
 } from "../constants/action-types";
 import wsImitation from "../../Components/WebSoscketImitation";
 
@@ -108,4 +108,13 @@ export function removeAccountTableRow(payload: any) {
 
 export function createAccountTableRow(payload: any) {
     return {type: CREATE_ACCOUNT_TABLE_ROW, payload}
+}
+
+// crosses table
+export function setCrossesTableData(payload: any) {
+    return {type: SET_CROSSES_TABLE_DATA, payload}
+}
+
+export function setCrossesTableRow(payload: any) {
+    return {type: SET_CROSSES_TABLE_ROW, payload}
 }

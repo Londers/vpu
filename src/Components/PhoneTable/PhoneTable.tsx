@@ -3,7 +3,7 @@ import {
     DataGrid,
     GridColDef,
     GridEditCellValueParams,
-    GridRowId,
+    GridRowId, GridRowParams,
     ruRU
 } from '@material-ui/data-grid';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
@@ -34,7 +34,7 @@ const columns: GridColDef[] = [
     {field: 'name', headerName: 'Оператор', editable: true, flex: 1.25},
     {field: 'areas', headerName: 'Районы', flex: 1.5},
     {field: 'dateDB', headerName: 'Время обновления БД', flex: 1.5},
-    {field: 'ltime', headerName: 'Время последней операции', flex: 1.5},
+    {field: 'ltime', headerName: 'Время последней операции', flex: 1.75},
     {field: 'laspOP', headerName: 'Последней операция', flex: 1},
     {field: 'connect', headerName: 'Статус', flex: 1},
     {field: 'nfaze', headerName: 'Текущая фаза', flex: 1.5},
@@ -51,13 +51,13 @@ function convertData(index: number, areasList: any, login: string, name: string,
     connect = connect ? 'Подключён' : 'Отключён'
     dateDB = new Date(dateDB).toLocaleString()
     ltime = new Date(ltime).toLocaleString()
-    return {id: index, login, name, areas, dateDB, ltime, laspOP, device, connect, nfaze, cfaze};
+    return {id: index, login, name, areas, dateDB, ltime, laspOP, device, connect, nfaze, cfaze}
 }
 
 function PhoneTable() {
     const tableData = useSelector((state: { tables: { phonesTableData: { phones: any, areas: string[] } } }) =>
         state.tables.phonesTableData)
-    console.log('phoneTable', tableData)
+    // console.log('phoneTable', tableData)
 
     const wsImitate = useSelector((state: { websocket: { ws: wsImitation } }) => state.websocket.ws)
 
@@ -87,24 +87,20 @@ function PhoneTable() {
     }, [wsImitate])
 
     const onCellChange = (e: GridEditCellValueParams) => {
-        console.log(e)
-        // console.log(rows[e.id])
-        console.log(tableData.phones[e.id])
         tableData.phones[e.id][e.field] = e.value
         wsImitate.send(JSON.stringify({type: 'updatePhone', data: tableData.phones[e.id]}))
-    }
-
-    const findLogin = (id: GridRowId) => {
-        return rowsInitialState.find((row: { id: GridRowId | number }) => row.id === id).login
     }
 
     return (
         <React.Fragment>
             <PhoneToolbar selectedLogin={selectedLogin.login} areas={areas}/>
             <ThemeProvider theme={theme}>
-                <div style={{height: 400, width: 1600}}>
-                    <DataGrid rows={rowsInitialState} columns={columns} pageSize={10} checkboxSelection={false}
-                              onRowClick={(row) => setSelectedLogin({id: row.id, login: findLogin(row.id)})}
+                <div style={{height: 400, width: window.innerWidth}}>
+                    <DataGrid rows={rowsInitialState}
+                              columns={columns}
+                              pageSize={10}
+                              checkboxSelection={false}
+                              onRowClick={(row) => setSelectedLogin({id: row.id, login: row.row.login})}
                               onCellValueChange={(e) => onCellChange(e)}/>
                 </div>
             </ThemeProvider>

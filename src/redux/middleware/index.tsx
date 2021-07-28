@@ -12,7 +12,7 @@ import {
     createPhoneTableRow,
     loggedIn,
     loginError, removeAccountTableRow,
-    removePhoneTableRow, setAccountTableData, setAccountTableRow,
+    removePhoneTableRow, setAccountTableData, setAccountTableRow, setCrossesTableData, setCrossesTableRow,
     setPhoneTableData,
     setPhoneTableRow
 } from "../actions"
@@ -78,6 +78,15 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                 case 'removeAccount':
                     dispatch(removeAccountTableRow(data.data))
                     console.log('removeAcc', data.data)
+                    break
+
+                case 'getCrosses':
+                    dispatch(setCrossesTableData(data.data))
+                    console.log('getCrosses', data.data)
+                    break
+                case 'updateCross':
+                    dispatch(setCrossesTableRow(data.data))
+                    console.log('updateCross', data.data)
                     break
 
                 case 'error':

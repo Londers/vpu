@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import wsImitation from "../WebSoscketImitation";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
-import {DataGrid, GridColDef, GridRowId, ruRU} from "@material-ui/data-grid";
+import {DataGrid, GridColDef, GridEditCellValueParams, GridRowId, ruRU} from "@material-ui/data-grid";
 import AccountsToolbar from "./AccountsToolbar";
 
 const theme = createMuiTheme(
@@ -44,7 +44,6 @@ function AccountsTable() {
     const wsImitate = useSelector((state: { websocket: { ws: wsImitation } }) => state.websocket.ws)
 
     const areas = tableData.areas
-
     const getRowsInitialState = () => {
         return (tableData.accounts === undefined) ? [] :
             tableData.accounts.map((record: any, index: number) => {
@@ -62,6 +61,11 @@ function AccountsTable() {
         wsImitate.send(JSON.stringify({type: 'getAccounts'}))
     }, [wsImitate])
 
+    const onCellChange = (e: GridEditCellValueParams) => {
+        tableData.accounts[e.id][e.field] = e.value
+        wsImitate.send(JSON.stringify({type: 'updateAccount', data: tableData.accounts[e.id]}))
+    }
+
     const findLogin = (id: GridRowId) => {
         return rowsInitialState.find((row: { id: GridRowId | number }) => row.id === id).login
     }
@@ -70,13 +74,13 @@ function AccountsTable() {
         <React.Fragment>
             <AccountsToolbar selectedLogin={selectedLogin.login} areas={areas} privileges={tableData.privileges}/>
             <ThemeProvider theme={theme}>
-                <div style={{height: 400, width: 1600}}>
+                <div style={{height: 400, width: window.innerWidth}}>
                     <DataGrid rows={rowsInitialState}
                               columns={columns}
                               pageSize={10}
                               checkboxSelection={false}
                               onRowClick={(row) => setSelectedLogin({id: row.id, login: findLogin(row.id)})}
-                        // onCellValueChange={(e) => onCellChange(e)}
+                              onCellValueChange={(e) => onCellChange(e)}
                     />
                 </div>
             </ThemeProvider>

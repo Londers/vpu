@@ -87,6 +87,53 @@ export default class wsImitation {
         }
     }
 
+    private crossesTable = {
+        type: 'getCrosses',
+        data: {
+            crosses: [
+                {
+                    "area": 1,
+                    "id": 1,
+                    "idevice": 159519,
+                    "name": "ДК 1. г. Наро - Фоминск, ул. Шибанкова - ул. Ермолаева",
+                    "host": "213.87.224.123",
+                    "port": 1100,
+                    "ssid": "WIFI Network",
+                    "passid": "rus162747",
+                    "login": "",
+                    "password": "",
+                    "fazes": []
+                },
+                {
+                    "area": 1,
+                    "id": 7,
+                    "idevice": 92777,
+                    "name": "ДК 7, г.Наро-Фоминск, ул.Маршала Жукова - ул. Кольцевая",
+                    "host": "213.87.122.79",
+                    "port": 1100,
+                    "ssid": "WIFI Network",
+                    "passid": "rus162747",
+                    "login": "",
+                    "password": "",
+                    "fazes": []
+                },
+                {
+                    "area": 1,
+                    "id": 6,
+                    "idevice": 204003,
+                    "name": "ДК 6. Наро-Фоминск, ул. Маршала Жукова - ООТ Горсовет ",
+                    "host": "213.87.121.173",
+                    "port": 1100,
+                    "ssid": "WIFI Network",
+                    "passid": "rus162747",
+                    "login": "",
+                    "password": "",
+                    "fazes": []
+                }
+            ]
+        },
+    }
+
     send(JSONData: string) {
         // const evt = new MessageEvent('message', {data: JSONData});
         // this.dispatch(wsMessage({evt: {data: JSONData}}))
@@ -125,7 +172,7 @@ export default class wsImitation {
             case 'phoneTable':
                 this.dispatch(wsMessage({evt: {data: JSON.stringify(this.phonesTable)}}))
                 break
-            case 'updatePhone':
+            case 'updatePhone': {
                 const index = this.phonesTable.data.phones.findIndex((el) => el.login === data.data.login)
                 this.phonesTable.data.phones[index] = data.data
                 this.dispatch(wsMessage({
@@ -137,6 +184,7 @@ export default class wsImitation {
                     }
                 }))
                 break
+            }
             case 'removePhone':
                 this.phonesTable.data.phones = this.phonesTable.data.phones.filter(phone => phone.login !== data.data.login)
                 this.dispatch(wsMessage({
@@ -164,16 +212,48 @@ export default class wsImitation {
             case 'getAccounts':
                 this.dispatch(wsMessage({evt: {data: JSON.stringify(this.accountsTable)}}))
                 break
-            case 'updateAccount':
+            case 'updateAccount': {
+                const index = this.accountsTable.data.accounts.findIndex((el) => el.login === data.data.login)
+                this.accountsTable.data.accounts[index] = data.data
+                this.dispatch(wsMessage({
+                    evt: {
+                        data: JSON.stringify({
+                            type: 'updateAccount',
+                            data: this.accountsTable.data.accounts
+                        })
+                    }
+                }))
                 break
+            }
             case 'removeAccount':
+                this.accountsTable.data.accounts = this.accountsTable.data.accounts.filter(account => account.login !== data.data.login)
+                this.dispatch(wsMessage({
+                    evt: {
+                        data: JSON.stringify({
+                            type: 'removeAccount',
+                            data: this.accountsTable.data.accounts
+                        })
+                    }
+                }))
                 break
 
             // crosses table
             case 'getCrosses':
+                this.dispatch(wsMessage({evt: {data: JSON.stringify(this.crossesTable)}}))
                 break
-            case 'updateCross':
+            case 'updateCross': {
+                const index = this.crossesTable.data.crosses.findIndex((el) => (el.idevice) === data.data.idevice)
+                this.crossesTable.data.crosses[index] = data.data
+                this.dispatch(wsMessage({
+                    evt: {
+                        data: JSON.stringify({
+                            type: 'updateCross',
+                            data: this.crossesTable.data.crosses
+                        })
+                    }
+                }))
                 break
+            }
 
             // logs table
             case 'logKeys':

@@ -8,12 +8,13 @@ import {
 } from 'react-router-dom';
 import './App.sass';
 import MainPage from './Pages/mainPage/MainPage';
-import UsersPage from './Pages/usersPage/UsersPage';
+import UsersPage from './Pages/crossesPage/CrossesPage';
 import AccountsPage from './Pages/aboutPage/AccountsPage';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppBar, ButtonBase, createStyles, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
 import {loggedOut, wsClose, wsConnect, wsError, wsMessage, wsOpen} from './redux/actions';
 import wsImitation from "./Components/WebSoscketImitation";
+import CrossesPage from "./Pages/crossesPage/CrossesPage";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -71,7 +72,7 @@ function App() {
                             <Link to="/accounts" className={classes.appBarLinks}>Accounts</Link>
                         </Typography>
                         <Typography variant="h6" className={classes.title}>
-                            <Link to="/users" className={classes.appBarLinks}>Users</Link>
+                            <Link to="/crosses" className={classes.appBarLinks}>Crosses</Link>
                         </Typography>
                         <ButtonBase color="primary" onClick={handleClick} className={classes.logout}>
                             Выйти</ButtonBase>
@@ -84,8 +85,8 @@ function App() {
                     <Route path="/accounts">
                         {logged ? <AccountsPage/> : <Redirect to="/"/>}
                     </Route>
-                    <Route path="/users">
-                        {logged ? <UsersPage/> : <Redirect to="/"/>}
+                    <Route path="/crosses">
+                        {logged ? <CrossesPage/> : <Redirect to="/"/>}
                     </Route>
                     <Route path="/">
                         <MainPage/>
