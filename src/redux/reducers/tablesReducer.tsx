@@ -6,13 +6,14 @@ import {
     SET_ACCOUNT_TABLE_DATA,
     SET_ACCOUNT_TABLE_ROW,
     REMOVE_ACCOUNT_TABLE_ROW,
-    CREATE_ACCOUNT_TABLE_ROW, SET_CROSSES_TABLE_DATA, SET_CROSSES_TABLE_ROW,
+    CREATE_ACCOUNT_TABLE_ROW, SET_CROSSES_TABLE_DATA, SET_CROSSES_TABLE_ROW, SET_LOGS_TABLE_DATA,
 } from "../constants/action-types";
 
 const tablesInitialState = {
     phonesTableData: {areas: {}, phones: []},
     accountsTableData: {accounts: []},
     crossesTableData: {crosst: []},
+    logsTableData: {logs: []},
 };
 
 export const tablesReducer = (state = {...tablesInitialState}, action: {
@@ -75,6 +76,13 @@ export const tablesReducer = (state = {...tablesInitialState}, action: {
             copy.phones = action.payload
             return Object.assign({}, state, {
                 crossesTableData: copy
+            })
+        }
+
+        case SET_LOGS_TABLE_DATA: {
+            console.log('qwqewqeqweq')
+            return Object.assign({}, state, {
+                logsTableData: action.payload
             })
         }
 

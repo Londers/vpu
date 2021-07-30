@@ -134,6 +134,23 @@ export default class wsImitation {
         },
     }
 
+    private logsTable = {
+        logs: [
+            {tm: '2021-05-20 16:30:26.496998+06', login: 'rura', key: '1:1', txt: 'Подключился к устройству'},
+            {tm: '2021-05-20 16:30:26.643314+06', login: 'rura', key: '1:1', txt: 'Отмена РУ'},
+            {tm: '2021-05-20 16:40:02.155458+06', login: 'rura', key: '1:1', txt: 'Подключился к устройству'},
+            {tm: '2021-05-20 16:40:02.293737+06', login: 'rura', key: '1:1', txt: 'Переход в РУ с фазой 5 текущая 1'},
+            {tm: '2021-05-31 09:32:16.95237+06', login: 'rura', key: '1:6', txt: 'Подключился к устройству'},
+            {tm: '2021-05-31 09:32:17.167229+06', login: 'rura', key: '1:6', txt: 'Переход в РУ с фазой 5 текущая 1'},
+            {tm: '2021-05-31 09:32:17.415728+06', login: 'rura', key: '1:6', txt: 'Установлен РУ с фазой 5 '},
+            {tm: '2021-05-31 09:32:17.668312+06', login: 'rura', key: '1:6', txt: 'Отмена РУ'},
+            {tm: '2021-05-31 10:29:39.670641+06', login: 'rura', key: '1:7', txt: 'Подключился к устройству'},
+            {tm: '2021-05-31 10:29:39.856538+06', login: 'rura', key: '1:7', txt: 'Переход в РУ с фазой 5 текущая 1'},
+            {tm: '2021-05-31 10:29:40.016722+06', login: 'rura', key: '1:7', txt: 'Установлен РУ с фазой 5 '},
+            {tm: '2021-05-31 10:29:40.171053+06', login: 'rura', key: '1:7', txt: 'Отмена РУ'},
+        ]
+    }
+
     send(JSONData: string) {
         // const evt = new MessageEvent('message', {data: JSONData});
         // this.dispatch(wsMessage({evt: {data: JSONData}}))
@@ -256,10 +273,23 @@ export default class wsImitation {
             }
 
             // logs table
-            case 'logKeys':
-                break
             case 'getLogs':
+                this.dispatch(wsMessage({
+                    evt: {
+                        data: JSON.stringify({
+                            type: 'getLogs',
+                            data: {
+                                logs: this.logsTable.logs.filter((log) => data.data.keys.some((key: string) => key === log.key))
+                            }
+                        })
+                    }
+                }))
                 break
+
+            // case 'logKeys':
+            //     break
+            // case 'getLogs':
+            //     break
 
             default:
                 console.log('unknown type:', data.type)

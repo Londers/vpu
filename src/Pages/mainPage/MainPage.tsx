@@ -12,9 +12,7 @@ function MainPage() {
         <div id="main">
             {(() => {
                 if (logged) {
-                    return (
-                        <PhoneTable/>
-                    )
+                    return <PhoneTable/>
                 } else {
                     return <AuthorizationDialog/>
                 }
