@@ -18,48 +18,44 @@ import {
 } from "../constants/action-types";
 import wsImitation from "../../Components/WebSoscketImitation";
 
-// // websocket
-// export function wsConnect(payload: {ws: WebSocket}) {
-//     return {type: WS_CONNECT, payload};
-// }
-//
-// export function wsConnect(payload: {ws: wsImitation}) {
-//     return {type: WS_CONNECT, payload};
-// }
-//
-// export function wsOpen(payload: {evt: Event}) {
-//     return {type: WS_OPEN, payload};
-// }
-//
-// export function wsClose(payload: {evt: Event}) {
-//     return {type: WS_CLOSE, payload};
-// }
-//
-// export function wsError(payload: {evt: Event}) {
-//     return {type: WS_ERROR, payload};
-// }
-//
-// export function wsMessage(payload: {evt: Event}) {
-//     return {type: WS_MESSAGE, payload};
-// }
-
-export function wsConnect(payload: { ws: wsImitation }) {
+// websocket
+export function wsConnect(payload: {ws: WebSocket}) {
     return {type: WS_CONNECT, payload};
 }
 
-export function wsOpen(payload: { evt: string }) {
+export function wsOpen(payload: {evt: Event}) {
     return {type: WS_OPEN, payload};
 }
 
-export function wsClose(payload: { evt: string }) {
+export function wsClose(payload: {evt: Event}) {
     return {type: WS_CLOSE, payload};
 }
 
-export function wsError(payload: { evt: string }) {
+export function wsError(payload: {evt: Event}) {
     return {type: WS_ERROR, payload};
 }
 
-export function wsMessage(payload: { evt: Object }) {
+export function wsMessage(payload: {evt: Event}) {
+    return {type: WS_MESSAGE, payload};
+}
+
+export function wsConnectImm(payload: { ws: wsImitation }) {
+    return {type: WS_CONNECT, payload};
+}
+
+export function wsOpenImm(payload: { evt: string }) {
+    return {type: WS_OPEN, payload};
+}
+
+export function wsCloseImm(payload: { evt: string }) {
+    return {type: WS_CLOSE, payload};
+}
+
+export function wsErrorImm(payload: { evt: string }) {
+    return {type: WS_ERROR, payload};
+}
+
+export function wsMessageImm(payload: { evt: Object }) {
     return {type: WS_MESSAGE, payload};
 }
 

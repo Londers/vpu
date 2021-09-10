@@ -61,8 +61,8 @@ export const WebSocketMiddleware = (storeApi: any) => (next: any) => (action: an
                     console.log('phoneTable', data.data)
                     break
                 case 'updatePhone':
-                    dispatch(setPhoneTableRow(data.data))
-                    console.log('updatePhone', data.data)
+                    dispatch(setPhoneTableRow(data.data.phones))
+                    console.log('updatePhone', data.data.phones)
                     break
                 case 'removePhone':
                     dispatch(removePhoneTableRow(data.data))

@@ -11,7 +11,16 @@ import MainPage from './Pages/mainPage/MainPage';
 import AccountsPage from './Pages/aboutPage/AccountsPage';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppBar, ButtonBase, createStyles, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
-import {loggedOut, wsClose, wsConnect, wsError, wsMessage, wsOpen} from './redux/actions';
+import {
+    loggedOut,
+    wsClose,
+    wsCloseImm, wsConnect,
+    wsConnectImm, wsError,
+    wsErrorImm, wsMessage,
+    wsMessageImm,
+    wsOpen,
+    wsOpenImm
+} from './redux/actions';
 import wsImitation from "./Components/WebSoscketImitation";
 import CrossesPage from "./Pages/crossesPage/CrossesPage";
 import LogsPage from "./Pages/logsPage/LogsPage";
@@ -42,18 +51,19 @@ function App() {
     const logged = useSelector((state: { auth: { logged: boolean } }) => state.auth.logged)
     const dispatch = useDispatch()
 
-    const host = `wss://${window.location.hostname}/MainPageW`
+    const host = `wss://${window.location.hostname}:4444/MainPageW`
     useEffect(() => {
-        // const ws = new WebSocket(host)
+        const ws = new WebSocket(host)
 
-        // ws.onopen = (evt) => dispatch(wsOpen({evt}))
-        // ws.onclose = (evt) => dispatch(wsClose({evt}))
-        // ws.onerror = (evt) => dispatch(wsError({evt}))
-        // ws.onmessage = (evt) => dispatch(wsMessage({evt}))
+        ws.onopen = (evt) => dispatch(wsOpen({evt}))
+        ws.onclose = (evt) => dispatch(wsClose({evt}))
+        ws.onerror = (evt) => dispatch(wsError({evt}))
+        ws.onmessage = (evt) => dispatch(wsMessage({evt}))
 
-        const wsImitate = new wsImitation(host, dispatch)
+        // const wsImitate = new wsImitation(host, dispatch)
+        // dispatch(wsConnectImm({ws: wsImitate}))
 
-        dispatch(wsConnect({ws: wsImitate}))
+        dispatch(wsConnect({ws: ws}))
     }, [dispatch, host]);
 
     const handleClick = () => {

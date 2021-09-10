@@ -4,24 +4,26 @@ import {Button, FormControl, InputLabel, Select, TextField} from "@material-ui/c
 import {useSelector} from "react-redux";
 import wsImitation from "../WebSoscketImitation";
 
+type Phone = {
+    areas: number[],
+    login: string,
+    name: string,
+    password: string,
+    status: {
+        cfaze: number,
+        connect: boolean,
+        dateDB: string,
+        device: string,
+        last_ops: string,
+        ltime: string,
+        nfaze: number
+    }
+}
+
 function PhoneAddModal(props: { setModal: Function, areas: {} }) {
     const wsImitate = useSelector((state: { websocket: { ws: wsImitation } }) => state.websocket.ws)
 
-    const [phone, setPhone] = useState({
-        areas: [] as string[],
-        login: '',
-        name: '',
-        password: '',
-        status: {
-            cfaze: 0,
-            connect: false,
-            dateDB: "2021-06-15T14:58:40.8717014+06:00",
-            device: "1:48",
-            last_ops: "Загрузка БД",
-            ltime: "2021-05-31T14:00:20.4008958+06:00",
-            nfaze: 0
-        }
-    })
+    const [phone, setPhone] = useState({} as Phone)
 
     const handleSubmit = () => {
         console.log(phone)
@@ -52,7 +54,7 @@ function PhoneAddModal(props: { setModal: Function, areas: {} }) {
     }
 
     const handleAreasChange = (event: any) => {
-        phone.areas = Array.from(event.target.selectedOptions).map((option: any) => option.value)
+        phone.areas = Array.from(event.target.selectedOptions).map((option: any) => Number(option.value))
         setPhone(Object.assign({}, phone))
         if (event.target.value !== '') event.target.setCustomValidity('')
     }
